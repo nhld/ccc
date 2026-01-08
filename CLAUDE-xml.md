@@ -23,6 +23,11 @@
     <no_emojis>
       Don't use emojis.
     </no_emojis>
+
+    <sample_similar_files>
+      Sample 2, 3 similar files for consistency. If the pattern is mixed, ask which pattern to follow.
+      If no consistency, propose suggestion first.
+    </sample_similar_files>
   </core_principles>
 
   <language_specific>
