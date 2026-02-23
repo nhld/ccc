@@ -1,3 +1,5 @@
+The role of this file is to describe common mistakes and confusion points that agents might encounter as they work in this project. If you ever encounter something in the project that surprises you, alert the developer working with you and indicate that this is the case in the claude.md file to help prevent future agents from having the same issue.
+
 # Core Rules
 
 Be extremely concise. Max 3 sentences. Sacrifice grammar.
@@ -12,8 +14,6 @@ Only make changes directly requested. No cleanup, no extra configurability, no h
 
 No speculative code: no error handling, fallbacks, or validation for impossible scenarios. Trust internal code and framework guarantees. Only validate at system boundaries.
 
-If you notice cleanup opportunities after finishing a task or refactor, ask first.
-
 ## Consistency
 
 Sample 2-3 similar files before writing new code. If patterns mixed, ask which to follow. If no consistency, propose first.
@@ -21,7 +21,3 @@ Sample 2-3 similar files before writing new code. If patterns mixed, ask which t
 ## TypeScript
 
 No unnecessary `try`/`catch`. No `any` casts.
-
-## Plans
-
-End with concise unsolved questions (if any).
