@@ -1,0 +1,36 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_SYNTAX_HIGHLIGHT": "1",
+    "IS_DEMO": "1",
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "0",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "MAX_THINKING_TOKENS": "128000"
+  },
+  "showThinkingSummaries": true,
+  "includeCoAuthoredBy": false,
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": []
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
+  },
+  "effortLevel": "high"
+}
