@@ -23,6 +23,10 @@ Only make changes directly requested. No cleanup, no extra configurability, no h
 
 No speculative code: no error handling, fallbacks, or validation for impossible scenarios. Trust internal code and framework guarantees. Only validate at system boundaries.
 
+## LSP
+
+Before modifying any Go or TypeScript function/type/interface, use LSP to check references, definitions, and call hierarchy. Don't rely solely on grep.
+
 ## TypeScript
 
 No unnecessary `try`/`catch`. No `any` casts.
