@@ -11,16 +11,6 @@ model=$(echo "$data" | jq -r '.model.display_name // .model.id // "unknown"')
 cwd=$(echo "$data" | jq -r '.cwd // empty')
 folder="${cwd##*/}"
 
-# Get git branch
-branch=""
-if [ -n "$cwd" ] && [ -d "$cwd/.git" ] || git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
-    branch=$(git -C "$cwd" symbolic-ref --short HEAD 2>/dev/null)
-fi
-
-# Get context info
-max_ctx=$(echo "$data" | jq -r '.context_window.context_window_size // 200000')
-used_pct=$(echo "$data" | jq -r '.context_window.used_percentage // empty')
-
 # Color codes
 PINK='\033[35m'
 YELLOW='\033[33m'
@@ -30,6 +20,24 @@ BLUE='\033[34m'
 RED='\033[38;5;196m'
 GREEN='\033[32m'
 RESET='\033[0m'
+
+# Get git branch and diff stats
+branch=""
+git_diff=""
+if [ -n "$cwd" ] && git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
+    branch=$(git -C "$cwd" symbolic-ref --short HEAD 2>/dev/null)
+    diff_stat=$(git -C "$cwd" diff HEAD --numstat 2>/dev/null)
+    changed_files=$(echo "$diff_stat" | grep -c .)
+    if [ -n "$diff_stat" ]; then
+        adds=$(echo "$diff_stat" | awk '{s+=$1} END {print s+0}')
+        dels=$(echo "$diff_stat" | awk '{s+=$2} END {print s+0}')
+        git_diff="${YELLOW}~${changed_files}${RESET} ${GREEN}+${adds}${RESET} ${RED}-${dels}${RESET}"
+    fi
+fi
+
+# Get context info
+max_ctx=$(echo "$data" | jq -r '.context_window.context_window_size // 200000')
+used_pct=$(echo "$data" | jq -r '.context_window.used_percentage // empty')
 
 # Format context display
 if [ -z "$used_pct" ] || [ "$used_pct" = "null" ]; then
@@ -70,5 +78,6 @@ fi
 # Output: Folder (branch) | Model | Context
 line1="${PINK}${folder}${RESET}"
 [ -n "$branch" ] && line1="${line1} (${BLUE}${branch}${RESET})"
+[ -n "$git_diff" ] && line1="${line1} ${git_diff}"
 printf '%b\n' "${line1}"
 printf '%b\n' "${ORANGE}${model}${RESET} | ${context_info}"
