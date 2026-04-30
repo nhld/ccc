@@ -15,7 +15,17 @@
   "includeCoAuthoredBy": false,
   "model": "opus",
   "hooks": {
-    "PreToolUse": []
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/scripts/no-grep-hook.py"
+          }
+        ]
+      }
+    ]
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
