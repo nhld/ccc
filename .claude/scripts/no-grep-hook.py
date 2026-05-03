@@ -18,5 +18,8 @@ if tool_name == "Bash":
     if re.search(r'(?:^|[|;&\s])grep\s', cmd):
         print('{"decision":"block","reason":"grep blocked. Use rg (ripgrep) or ast-grep instead."}')
         sys.exit(0)
+    if re.search(r'(?:^|[\n|;&])find\s', cmd):
+        print('{"decision":"block","reason":"find blocked. Use fd instead."}')
+        sys.exit(0)
 
 print('{"decision":"approve"}')
