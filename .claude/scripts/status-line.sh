@@ -17,7 +17,7 @@ YELLOW='\033[33m'
 BOLD_YELLOW='\033[1;33m'
 ORANGE='\033[38;5;208m'
 BLUE='\033[34m'
-RED='\033[38;5;196m'
+RED='\033[38;5;167m'
 GREEN='\033[32m'
 RESET='\033[0m'
 
@@ -33,6 +33,8 @@ if [ -n "$cwd" ] && git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
         dels=$(echo "$diff_stat" | awk '{s+=$2} END {print s+0}')
         git_diff="${YELLOW}~${changed_files}${RESET} ${GREEN}+${adds}${RESET} ${RED}-${dels}${RESET}"
     fi
+    untracked=$(git -C "$cwd" ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
+    [ "$untracked" -gt 0 ] 2>/dev/null && git_diff="${git_diff} ${PINK}?${untracked}${RESET}"
 fi
 
 # Get context info
