@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"BLOCKING REQUIREMENT: Before doing anything else this session, you MUST invoke BOTH the karpathy-guidelines skill AND the caveman skill using the Skill tool. Do NOT skip this. Do NOT respond to the user until both skills have been loaded.\"}}'"
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Invoke skills: karpathy-guidelines, caveman.\"}}'"
           }
         ]
       }
@@ -51,6 +51,5 @@
         "repo": "anthropics/skills"
       }
     }
-  },
-  "effortLevel": "high"
+  }
 }
