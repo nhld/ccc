@@ -34,7 +34,11 @@ if [ -n "$cwd" ] && git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
         git_diff="${YELLOW}~${changed_files}${RESET} ${GREEN}+${adds}${RESET} ${RED}-${dels}${RESET}"
     fi
     untracked=$(git -C "$cwd" ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
-    [ "$untracked" -gt 0 ] 2>/dev/null && git_diff="${git_diff} ${PINK}?${untracked}${RESET}"
+    untracked=${untracked:-0}
+    if [ "$untracked" -gt 0 ]; then
+        [ -n "$git_diff" ] && git_diff="${git_diff} "
+        git_diff="${git_diff}${PINK}?${untracked}${RESET}"
+    fi
 fi
 
 # Get context info
