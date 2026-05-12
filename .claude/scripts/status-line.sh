@@ -78,12 +78,16 @@ else
         fi
     done
 
-    context_info="${bar} ${BOLD_YELLOW}${used_k}k${RESET}/${max_k}k (${pct}% used)"
+    context_info="${bar} ${BOLD_YELLOW}${used_k}k${RESET}/${max_k}k (${pct}%)"
 fi
 
-# Output: Folder (branch) | Model | Context
+# Session cost
+cost=$(echo "$data" | jq -r '.cost.total_cost_usd // 0')
+cost_str=$(printf '$%.2f' "$cost")
+
+# Output: Folder (branch) | Model | Context | Cost
 line1="${PINK}${folder}${RESET}"
 [ -n "$branch" ] && line1="${line1} (${BLUE}${branch}${RESET})"
 [ -n "$git_diff" ] && line1="${line1} ${git_diff}"
 printf '%b\n' "${line1}"
-printf '%b\n' "${ORANGE}${model}${RESET} | ${context_info}"
+printf '%b\n' "${ORANGE}${model}${RESET} | ${context_info} | ${GREEN}${cost_str}${RESET}"
