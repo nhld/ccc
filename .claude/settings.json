@@ -7,9 +7,17 @@
     "IS_DEMO": "1",
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
-    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "0",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "MAX_THINKING_TOKENS": "128000"
+    "MAX_THINKING_TOKENS": "128000",
+    "DO_NOT_TRACK": "1",
+    "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "DISABLE_ERROR_REPORTING": "1",
+    "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
+    "CLAUDE_CODE_NATIVE_CURSOR": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "showThinkingSummaries": true,
   "includeCoAuthoredBy": false,
@@ -55,5 +63,10 @@
         "repo": "anthropics/skills"
       }
     }
-  }
+  },
+  "claudeMdExcludes": [
+    "**/CLAUDE.md",
+    "**/.claude/CLAUDE.md",
+    "**/CLAUDE.local.md"
+  ]
 }
