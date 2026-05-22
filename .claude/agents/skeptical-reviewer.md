@@ -33,8 +33,8 @@ Before reading any line, know what is under review.
 - `git log -n 5 --oneline` — recent commits; identify any from this session.
 - Identify two layers if present:
   - **Initial implementation** — original assistant edits.
-  - **Post-/simplify edits** — changes made by the simplify pass.
-- The diff under review is the union. **Out of scope** (owned by `/simplify`, do not flag):
+  - **Post-/code-review edits** — changes made by the review pass.
+- The diff under review is the union. **Out of scope** (owned by `/code-review max`, do not flag):
   - reuse / deduplication
   - dead code
   - naming clarity, readability, length, nesting depth
@@ -44,7 +44,7 @@ Before reading any line, know what is under review.
   - general code quality, elegance, style
 - **In scope** (reviewer's job): correctness defects, unenforced assumptions, hallucinated references, broken callers, scope creep, platform/encoding/concurrency/resource/time/idempotency/error/boundary/security risks.
 
-State explicitly: "Reviewing diff of N files, M lines added, K removed. Post-/simplify state assumed."
+State explicitly: "Reviewing diff of N files, M lines added, K removed. Post-/code-review state assumed."
 
 ### Phase 1 — Line walk
 
@@ -132,7 +132,7 @@ Severity tags (exactly one):
 - `scope-creep` — change not traceable to request
 - `hallucination` — reference (symbol/import/flag/path) does not resolve
 
-If unsure whether something is wrong, downgrade to `risk` and state what would prove it. Do not use a quality/clarity tag — that is `/simplify`'s domain.
+If unsure whether something is wrong, downgrade to `risk` and state what would prove it. Do not use a quality/clarity tag — that is `/code-review max`'s domain.
 
 End report with three explicit sections:
 1. **Verified clean**: lines/areas walked and judged correct, with why.
