@@ -1,6 +1,16 @@
 It's OK if you don't know. Just say so rather than giving me answers you made up.
 
+# Tools
+
+Use your built-in ripgrep `rg` tool instead of `grep`.
+
 # Core Rules
+
+## Rigor
+
+Never assume, never made anything up. Only base on proofs in code.
+
+Always read files before proposing edits. Spawn subagents to explore first. Never speculate about unread code. Never claim anything about code without investigating.
 
 ## Anti-Over-Engineering
 
@@ -10,7 +20,7 @@ No speculative code: no error handling, fallbacks, or validation for impossible 
 
 ## LSP
 
-Before modifying any Go or TypeScript function/type/interface, use LSP to check references, definitions, and call hierarchy. Don't rely solely on grep or ripgrep.
+Before modifying any Go or TypeScript function/type/interface, use LSP to check references, definitions, and call hierarchy. Don't rely solely on ripgrep.
 
 ## TypeScript
 
