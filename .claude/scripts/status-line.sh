@@ -7,6 +7,9 @@ data=$(cat)
 # Get model name
 model=$(echo "$data" | jq -r '.model.display_name // .model.id // "unknown"')
 
+# Get current session effort level (live, from stdin — reflects runtime /effort changes)
+effort=$(echo "$data" | jq -r '.effort.level // empty')
+
 # Get cwd (short: last folder name)
 cwd=$(echo "$data" | jq -r '.cwd // empty')
 folder="${cwd##*/}"
@@ -81,13 +84,33 @@ else
     context_info="${bar} ${BOLD_YELLOW}${used_k}k${RESET}/${max_k}k (${pct}%)"
 fi
 
-# Session cost
+# Session cost from input JSON
 cost=$(echo "$data" | jq -r '.cost.total_cost_usd // 0')
-cost_str=$(printf '$%.2f' "$cost")
+cost_str=$(LC_NUMERIC=C printf '$%.4f' "$cost")
 
-# Output: Folder (branch) | Model | Context | Cost
+# Output: Folder (branch) | Model | Effort | Context | Cost
 line1="${PINK}${folder}${RESET}"
 [ -n "$branch" ] && line1="${line1} (${BLUE}${branch}${RESET})"
 [ -n "$git_diff" ] && line1="${line1} ${git_diff}"
 printf '%b\n' "${line1}"
-printf '%b\n' "${ORANGE}${model}${RESET} | ${context_info} | ${GREEN}${cost_str}${RESET}"
+# Line 2: two groups justified space-between across the terminal width.
+# Left: Model | Effort    Right: Context | Cost
+left="${ORANGE}${model}${RESET}"
+[ -n "$effort" ] && left="${left} | ${BLUE}${effort}${RESET}"
+right="${context_info} | ${GREEN}${cost_str}${RESET}"
+
+# Terminal width comes ONLY from $COLUMNS — Claude Code sets it per render; tput/ioctl
+# can't read it here because our stdout is a pipe, not a TTY.
+cols=${COLUMNS:-80}
+
+# Reserve a right margin: CC truncates the line with an ellipsis and shares the row's
+# right edge with notifications / the verbose token counter, so never fill to the edge.
+margin=5
+
+# Visible length = strip ANSI escapes, then count code points (UTF-8: ○/● = 1 col each)
+strip_left=$(printf '%b' "$left" | sed $'s/\x1b\\[[0-9;]*m//g')
+strip_right=$(printf '%b' "$right" | sed $'s/\x1b\\[[0-9;]*m//g')
+pad=$(( cols - margin - ${#strip_left} - ${#strip_right} ))
+[ "$pad" -lt 1 ] && pad=1
+gap=$(printf '%*s' "$pad" '')
+printf '%b\n' "${left}${gap}${right}"
