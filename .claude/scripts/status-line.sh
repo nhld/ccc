@@ -18,7 +18,7 @@ folder="${cwd##*/}"
 PINK='\033[35m'
 YELLOW='\033[33m'
 BOLD_YELLOW='\033[1;33m'
-ORANGE='\033[38;5;208m'
+ORANGE='\033[38;2;218;119;86m'
 BLUE='\033[34m'
 RED='\033[38;5;167m'
 GREEN='\033[32m'
@@ -89,14 +89,14 @@ cost=$(echo "$data" | jq -r '.cost.total_cost_usd // 0')
 cost_str=$(LC_NUMERIC=C printf '$%.4f' "$cost")
 
 # Output: Folder (branch) | Model | Effort | Context | Cost
-line1="${PINK}${folder}${RESET}"
-[ -n "$branch" ] && line1="${line1} (${BLUE}${branch}${RESET})"
+line1="${BLUE}${folder}${RESET}"
+[ -n "$branch" ] && line1="${line1} (${PINK}${branch}${RESET})"
 [ -n "$git_diff" ] && line1="${line1} ${git_diff}"
 printf '%b\n' "${line1}"
 # Line 2: two groups justified space-between across the terminal width.
 # Left: Model | Effort    Right: Context | Cost
 left="${ORANGE}${model}${RESET}"
-[ -n "$effort" ] && left="${left} | ${BLUE}${effort}${RESET}"
+[ -n "$effort" ] && left="${left} ${ORANGE}${effort}${RESET}"
 right="${context_info} | ${GREEN}${cost_str}${RESET}"
 
 # Terminal width comes ONLY from $COLUMNS — Claude Code sets it per render; tput/ioctl
