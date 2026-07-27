@@ -1,9 +1,5 @@
 It's OK if you don't know. Just say so rather than giving me answers you made up.
 
-# Tools
-
-Use your built-in ripgrep `rg` tool instead of `grep`.
-
 # Core Rules
 
 ## Rigor
@@ -20,7 +16,7 @@ No speculative code: no error handling, fallbacks, or validation for impossible 
 
 ## LSP
 
-Before modifying any Go or TypeScript function/type/interface, use LSP to check references, definitions, and call hierarchy. Don't rely solely on ripgrep.
+Before modifying any Go or TypeScript function/type/interface, use LSP to check references, definitions, and call hierarchy. Don't rely solely on grep/ripgrep.
 
 ## TypeScript
 
