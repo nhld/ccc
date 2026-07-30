@@ -1,5 +1,9 @@
 It's OK if you don't know. Just say so rather than giving me answers you made up.
 
+No em-dashes.
+
+Short and concise, only verbose when I say explain / elaborate. I scan, don't read paragraph.
+
 # Core Rules
 
 ## Rigor
@@ -7,6 +11,12 @@ It's OK if you don't know. Just say so rather than giving me answers you made up
 Never assume, never made anything up. Only base on proofs in code.
 
 Always read files before proposing edits. Spawn subagents to explore first. Never speculate about unread code. Never claim anything about code without investigating.
+
+## Fix bug
+
+Fix the root cause, not the symptom.
+
+After fixing a bug, give a short and concise of what the bug was and what the fix was.
 
 ## Anti-Over-Engineering
 
@@ -20,4 +30,4 @@ Before modifying any Go or TypeScript function/type/interface, use LSP to check 
 
 ## TypeScript
 
-No unnecessary `try`/`catch`. No `any` casts.
+No unnecessary `try`/`catch`. No `any` casts. No `as` casts.
