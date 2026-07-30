@@ -88,29 +88,41 @@ fi
 cost=$(echo "$data" | jq -r '.cost.total_cost_usd // 0')
 cost_str=$(LC_NUMERIC=C printf '$%.4f' "$cost")
 
-# Output: Folder (branch) | Model | Effort | Context | Cost
+# Rate limit usage (5h window, weekly window), same color thresholds as the context bar
+rate_color() {
+    if [ "$1" -ge 80 ] 2>/dev/null; then printf '%s' "$RED"
+    elif [ "$1" -ge 50 ] 2>/dev/null; then printf '%s' "$ORANGE"
+    else printf '%s' "$GREEN"; fi
+}
+rl5=$(echo "$data" | jq -r '.rate_limits.five_hour.used_percentage // 0')
+rl7=$(echo "$data" | jq -r '.rate_limits.seven_day.used_percentage // 0')
+rl5=$(LC_NUMERIC=C printf '%.0f' "$rl5" 2>/dev/null)
+rl7=$(LC_NUMERIC=C printf '%.0f' "$rl7" 2>/dev/null)
+rate_info="$(rate_color "$rl5")${rl5}%${RESET} $(rate_color "$rl7")${rl7}%${RESET}"
+
+# Space-between: left and right groups justified across the terminal width.
+# Terminal width comes ONLY from $COLUMNS — Claude Code sets it per render; tput/ioctl
+# can't read it here because our stdout is a pipe, not a TTY.
+# Reserve a right margin: CC truncates the line with an ellipsis and shares the row's
+# right edge with notifications / the verbose token counter, so never fill to the edge.
+# Visible length = strip ANSI escapes, then count code points (UTF-8: ○/● = 1 col each)
+justify() {
+    local left="$1" right="$2" margin=5 strip_left strip_right pad gap
+    strip_left=$(printf '%b' "$left" | sed $'s/\x1b\\[[0-9;]*m//g')
+    strip_right=$(printf '%b' "$right" | sed $'s/\x1b\\[[0-9;]*m//g')
+    pad=$(( ${COLUMNS:-80} - margin - ${#strip_left} - ${#strip_right} ))
+    [ "$pad" -lt 1 ] && pad=1
+    gap=$(printf '%*s' "$pad" '')
+    printf '%b\n' "${left}${gap}${right}"
+}
+
+# Line 1: Folder (branch) diffstat          5h% weekly%
 line1="${BLUE}${folder}${RESET}"
 [ -n "$branch" ] && line1="${line1} (${PINK}${branch}${RESET})"
 [ -n "$git_diff" ] && line1="${line1} ${git_diff}"
-printf '%b\n' "${line1}"
-# Line 2: two groups justified space-between across the terminal width.
-# Left: Model | Effort    Right: Context | Cost
+justify "$line1" "$rate_info"
+
+# Line 2: Model | Effort          Context | Cost
 left="${ORANGE}${model}${RESET}"
 [ -n "$effort" ] && left="${left} ${ORANGE}${effort}${RESET}"
-right="${context_info} | ${GREEN}${cost_str}${RESET}"
-
-# Terminal width comes ONLY from $COLUMNS — Claude Code sets it per render; tput/ioctl
-# can't read it here because our stdout is a pipe, not a TTY.
-cols=${COLUMNS:-80}
-
-# Reserve a right margin: CC truncates the line with an ellipsis and shares the row's
-# right edge with notifications / the verbose token counter, so never fill to the edge.
-margin=5
-
-# Visible length = strip ANSI escapes, then count code points (UTF-8: ○/● = 1 col each)
-strip_left=$(printf '%b' "$left" | sed $'s/\x1b\\[[0-9;]*m//g')
-strip_right=$(printf '%b' "$right" | sed $'s/\x1b\\[[0-9;]*m//g')
-pad=$(( cols - margin - ${#strip_left} - ${#strip_right} ))
-[ "$pad" -lt 1 ] && pad=1
-gap=$(printf '%*s' "$pad" '')
-printf '%b\n' "${left}${gap}${right}"
+justify "$left" "${context_info} | ${GREEN}${cost_str}${RESET}"
