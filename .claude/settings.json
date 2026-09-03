@@ -17,9 +17,11 @@
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
     "CLAUDE_CODE_NATIVE_CURSOR": "1",
     "CLAUDE_CODE_FORK_SUBAGENT": "1",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_DISABLE_ARTIFACT": "1"
   },
   "showThinkingSummaries": true,
+  "enableArtifact": false,
   "includeCoAuthoredBy": false,
   "model": "opus",
   "statusLine": {
