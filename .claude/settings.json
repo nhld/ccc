@@ -29,27 +29,8 @@
     "command": "bash .claude/scripts/status-line.sh"
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Invoke skills: karpathy-guidelines, caveman.\"}}'"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash|Grep",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/scripts/no-grep-hook.py"
-          }
-        ]
-      }
-    ]
+    "SessionStart": [],
+    "PreToolUse": []
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
